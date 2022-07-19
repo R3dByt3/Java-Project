@@ -1,14 +1,25 @@
 package com.rest.choice.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.rest.choice.serializer.InstanceDeserializer;
 import org.springframework.data.annotation.Id;
 
+@JsonDeserialize(using = InstanceDeserializer.class)
 public abstract class SurveyBase {
     @Id
-    public String id;
+    private String id;
 
-    public String title;
+    private String title;
 
-    public SurveyBase(String name) {
-        this.title = name;
+    public SurveyBase(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

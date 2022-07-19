@@ -14,7 +14,7 @@ public class SurveyController {
         _votingDtoRepository = votingDtoRepository;
     }
 
-    @PostMapping("/voting")
+    @PostMapping(value = "/voting", consumes = "application/json")
     void addVoting(@RequestBody SurveyBase votingDto) {
         _votingDtoRepository.save(votingDto);
     }

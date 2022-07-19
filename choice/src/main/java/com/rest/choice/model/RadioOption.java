@@ -1,13 +1,20 @@
 package com.rest.choice.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RadioOption extends OptionBase {
-    public Map<String, Long> radioOptions;
+    private Map<String, Long> radioOptions;
 
-    public RadioOption(String question) {
+    public RadioOption(String question, Map<String, Long> radioOptions) {
         super(question);
-        radioOptions = new HashMap<String, Long>();
+        this.radioOptions = radioOptions;
+    }
+
+    public Map<String, Long> getRadioOptions() {
+        return radioOptions;
+    }
+
+    public void setRadioOptions(Map<String, Long> radioOptions) {
+        this.radioOptions = radioOptions;
     }
 }

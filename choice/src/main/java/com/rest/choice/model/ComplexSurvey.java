@@ -3,10 +3,18 @@ package com.rest.choice.model;
 import java.util.ArrayList;
 
 public class ComplexSurvey extends SurveyBase {
-    public ArrayList<OptionBase> options;
+    private ArrayList<OptionBase> options;
 
-    public ComplexSurvey(String name, ArrayList<OptionBase> options) {
-        super(name);
+    public ComplexSurvey(String title, ArrayList<OptionBase> options) {
+        super(title);
+        this.options = options;
+    }
+
+    public ArrayList<OptionBase> getOptions() {
+        return options;
+    }
+
+    public void setOptions(ArrayList<OptionBase> options) {
         this.options = options;
     }
 }
