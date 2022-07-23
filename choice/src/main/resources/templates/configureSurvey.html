@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+    <meta charset="utf-8">
+</head>
+
+<body>
+
+<h1>Umfrage konfigurieren</h1>
+<form th:action="@{/addSurvey}"
+      method="post">
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input class="form-control" type="text" name="name" minlength="1"
+                       maxlength="255"></td>
+        </tr>
+        <tr>
+            <td>E-Mail:</td>
+            <td><input class="form-control" type="text" name="email" minlength="1"
+                       maxlength="255"></td>
+        </tr>
+        <tr>
+            <td>Titel:</td>
+            <td><input class="form-control" type="text" name="title" minlength="1"
+                       maxlength="255"></td>
+        </tr>
+        <tr>
+            <td>Beschreibung:</td>
+            <td><input class="form-control" type="text" name="description" minlength="1"
+                       maxlength="255"></td>
+        </tr>
+        <tr>
+            <td>Frage:</td>
+            <td><input class="form-control" type="text" name="question" minlength="1"
+                       maxlength="255"></td>
+        </tr>
+        <tr>
+
+            <input type="submit" class="btn btn-outline-primary btn-sm" value="Umfrage erstellen">
+
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

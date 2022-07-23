@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="container">
+    <br>
+    <header>
+        <h1 class="text-center">Umfrage erstellen:</h1>
+    </header>
+</div>
+<br>
+<div class="container" style="text-align: center">
+        <form class="text-center" th:action="@{/configure}" method="get">
+                    <input type="submit" class="btn btn-outline-primary btn-block"
+                           th:value="Starten">
+        </form>
+</div>
+</body>
+</html>

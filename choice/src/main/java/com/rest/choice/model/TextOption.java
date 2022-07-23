@@ -17,4 +17,8 @@ public class TextOption extends OptionBase {
     public void setAnswers(ArrayList<String> answers) {
         this.answers = answers;
     }
+
+    public String getType(){
+        return super.getType();
+    }
 }

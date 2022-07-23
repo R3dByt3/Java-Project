@@ -17,4 +17,8 @@ public class RadioOption extends OptionBase {
     public void setRadioOptions(Map<String, Long> radioOptions) {
         this.radioOptions = radioOptions;
     }
+
+    public String getType(){
+        return super.getType();
+    }
 }

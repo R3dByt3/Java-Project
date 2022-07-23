@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+    <meta charset="utf-8">
+</head>
+
+<body>
+<p th:text="${surveyId}"></p>
+</body>
+
+
+<body>
+<form th:action="@{/addSurveyAnswers?surveyId=3}"
+      method="post">
+    <div class="container">
+        <table th:if="${listSurveyQuestions != null}"
+               class="table table-hover table-bordered table-fixed">
+            <thead>
+            <tr>
+                <th>Frage</th>
+                <th>Antwort</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="question : ${listSurveyQuestions}">
+                <td th:text="${question.question}"></td>
+                <td th:if="${question.type.equals('TextOption')}">
+                    <input class="form-control" type="text" name="question" minlength="1" maxlength="255"/>
+                </td>
+
+                <td th:if="${question.type.equals('RadioOption')}">
+                    <div th:each="option : ${question.getRadioOptions()}">
+                        <input type="radio" th:value="${option.value}" th:id="${option.key}"
+                               th:name="${question.question}"/>
+                        <label th:for="${option.key}" th:text="${option.key}"></label>
+                    </div>
+                </td>
+                <td th:if="${question.type.equals('CheckBoxOption')}">
+                    <div th:each="option : ${question.getCheckBoxOptions()}">
+                        <input type="checkbox" th:value="${option.x}" th:id="${option.x}"
+                               th:name="${question.question}"/>
+                        <label th:for="${option.x}" th:text="${option.x}"></label>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage abschließen">
+    </div>
+    <br>
+</form>
+</body>
+</html>

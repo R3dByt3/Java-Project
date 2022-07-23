@@ -18,4 +18,8 @@ public class CheckBoxOption extends OptionBase {
     public void setCheckBoxOptions(ArrayList<Tuple<String, Long>> checkBoxOptions) {
         this.checkBoxOptions = checkBoxOptions;
     }
+
+    public String getType(){
+        return super.getType();
+    }
 }
