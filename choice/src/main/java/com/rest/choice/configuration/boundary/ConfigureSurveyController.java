@@ -18,19 +18,31 @@ public class ConfigureSurveyController {
 
     @Autowired private ConfigureSurveyService configureSurveyService;
 
-    @RequestMapping(value = "/configure" , method = RequestMethod.GET)
-    public String getSurveyConfigurationPage(@RequestParam Optional<String> error, Model model) {
-        return "configureSurvey";
+    @RequestMapping(value = "/createSurvey", method = RequestMethod.GET)
+    public String getSurveyCreationPage(@RequestParam Optional<String> error, Model model) {
+        return "createSurvey";
     }
 
     @RequestMapping(value = "/addSurvey" , method = RequestMethod.POST)
-    public String getSurveyConfigurationPage(@RequestParam String name, @RequestParam String email, @RequestParam String title, @RequestParam String description, @RequestParam String question, Model model) {
+    public String createSurvey(@RequestParam String name, @RequestParam String email, @RequestParam String title, @RequestParam String description, @RequestParam String question, Model model) {
         model.addAttribute("name", name);
         model.addAttribute("email", email);
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("question", question);
         configureSurveyService.createSurvey(name, email, title, description, question);
+        return "redirect:configureSurvey?secretId=" + 3L;
+    }
+
+    @RequestMapping(value = "/configureSurvey" , method = RequestMethod.GET)
+    public String getSurveyConfigurationPage(@RequestParam Long secretId, Model model) {
+        model.addAttribute("secretId", secretId);
+        return "configureSurvey";
+    }
+
+    @RequestMapping(value = "/endSurvey" , method = RequestMethod.POST)
+    public String endSurvey(@RequestParam Long secretId, Model model) {
+        model.addAttribute("secretId", secretId);
         return "configureSurvey";
     }
 }
