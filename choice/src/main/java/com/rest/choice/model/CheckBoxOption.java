@@ -1,25 +1,22 @@
 package com.rest.choice.model;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Map;
+
+@JsonDeserialize(as = CheckBoxOption.class)
+@Data
+@Document("option")
+@NoArgsConstructor
 public class CheckBoxOption extends OptionBase {
 
-    private ArrayList<Tuple<String, Long>> checkBoxOptions;
+    private Map<String, Long> checkBoxOptions;
 
-    public CheckBoxOption(String question, ArrayList<Tuple<String, Long>> checkBoxOptions) {
+    public CheckBoxOption(String question, Map<String, Long> options) {
         super(question);
-        this.checkBoxOptions = checkBoxOptions;
-    }
-
-    public ArrayList<Tuple<String, Long>> getCheckBoxOptions() {
-        return checkBoxOptions;
-    }
-
-    public void setCheckBoxOptions(ArrayList<Tuple<String, Long>> checkBoxOptions) {
-        this.checkBoxOptions = checkBoxOptions;
-    }
-
-    public String getType(){
-        return super.getType();
+        this.checkBoxOptions = options;
     }
 }
