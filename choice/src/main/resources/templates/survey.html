@@ -1,53 +1,49 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head">
-    <meta charset="utf-8">
-</head>
+    <head th:replace="fragments/header :: head">
+        <meta charset="utf-8">
+    </head>
 
-<body>
-<p th:text="${surveyId}"></p>
-</body>
+    <body>
+        <p th:text="${surveyId}"></p>
+        <form th:action="@{/addSurveyAnswers?surveyId=__${surveyId}__}" th:object="${answers}"
+              method="post">
+            <div class="container">
+                <table th:if="${listSurveyQuestions != null}"
+                       class="table table-hover table-bordered table-fixed">
+                    <thead>
+                    <tr>
+                        <th>Frage</th>
+                        <th>Antwort</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="question : ${listSurveyQuestions}">
+                        <td th:text="${question.getQuestion()}"></td>
+                        <td th:if="${typeHelper.GetTypeName(question).equals('TextOption')}">
+                            <input class="form-control" type="text" th:field="*{responses[__${question.get_id()}__]}" minlength="1" maxlength="255"/>
+                        </td>
 
-
-<body>
-<form th:action="@{/addSurveyAnswers?surveyId=3}"
-      method="post">
-    <div class="container">
-        <table th:if="${listSurveyQuestions != null}"
-               class="table table-hover table-bordered table-fixed">
-            <thead>
-            <tr>
-                <th>Frage</th>
-                <th>Antwort</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="question : ${listSurveyQuestions}">
-                <td th:text="${question.question}"></td>
-                <td th:if="${typeHelper.GetTypeName(question).equals('TextOption')}">
-                    <input class="form-control" type="text" name="question" minlength="1" maxlength="255"/>
-                </td>
-
-                <td th:if="${typeHelper.GetTypeName(question).equals('RadioOption')}">
-                    <div th:each="option : ${typeHelper.AsRadioOption(question).getRadioOptions()}">
-                        <input type="radio" th:value="${option.key}" th:id="${option.value}"
-                               th:name="${question.question}"/>
-                        <label th:for="${option.key}" th:text="${option.key}"></label>
-                    </div>
-                </td>
-                <td th:if="${typeHelper.GetTypeName(question).equals('CheckBoxOption')}">
-                    <div th:each="option : ${typeHelper.AsCheckBoxOption(question).getCheckBoxOptions()}">
-                        <input type="checkbox" th:value="${option.key}" th:id="${option.value}"
-                               th:name="${question.question}"/>
-                        <label th:for="${option.key}" th:text="${option.value}"></label>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage abschließen">
-    </div>
-    <br>
-</form>
-</body>
+                        <td th:if="${typeHelper.GetTypeName(question).equals('RadioOption')}">
+                            <div th:each="option : ${typeHelper.AsRadioOption(question).getRadioOptions()}">
+                                <input type="radio" th:value="${option.key}" th:id="${option.key}"
+                                       th:field="*{responses[__${question.get_id()}__]}"/>
+                                <label th:for="${option.key}" th:text="${option.key}"></label>
+                            </div>
+                        </td>
+                        <td th:if="${typeHelper.GetTypeName(question).equals('CheckBoxOption')}">
+                            <div th:each="option : ${typeHelper.AsCheckBoxOption(question).getCheckBoxOptions()}">
+                                <input type="checkbox" th:value="${option.key}" th:id="${option.key}"
+                                       th:field="*{responses[__${question.get_id()}__]}"/>
+                                <label th:for="${option.key}" th:text="${option.key}"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage abschließen">
+            </div>
+            <br>
+        </form>
+    </body>
 </html>

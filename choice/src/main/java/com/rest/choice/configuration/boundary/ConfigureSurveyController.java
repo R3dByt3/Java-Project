@@ -1,14 +1,10 @@
 package com.rest.choice.configuration.boundary;
 
 import com.rest.choice.configuration.service.ConfigureSurveyService;
-import com.rest.choice.model.CheckBoxOption;
-import com.rest.choice.model.OptionBase;
-import com.rest.choice.model.RadioOption;
-import com.rest.choice.model.TextOption;
+import com.rest.choice.model.*;
 import com.rest.choice.util.TypeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +22,11 @@ public class ConfigureSurveyController {
 
     private static final Logger log = LoggerFactory.getLogger(ConfigureSurveyController.class);
 
-    @Autowired private ConfigureSurveyService configureSurveyService;
+    private final ConfigureSurveyService configureSurveyService;
+
+    public ConfigureSurveyController(ConfigureSurveyService configureSurveyService) {
+        this.configureSurveyService = configureSurveyService;
+    }
 
     @RequestMapping(value = "/createSurvey", method = RequestMethod.GET)
     public String getSurveyCreationPage(@RequestParam Optional<String> error, Model model) {
@@ -38,20 +38,30 @@ public class ConfigureSurveyController {
         model.addAttribute("name", name);
         model.addAttribute("title", title);
         model.addAttribute("description", description);
-        model.addAttribute("surveyId", 3);
-        configureSurveyService.createSurvey(name, title, description, questions);
-        return "redirect:configureSurvey?secretId=" + 3L;
+
+        SurveyBase surveyBase = null;
+
+        if (questions.stream().count() == 1)
+            surveyBase = new SimpleSurvey(title, questions.get(0));
+        else
+            surveyBase = new ComplexSurvey(title, questions);
+
+        String id = configureSurveyService.createSurvey(surveyBase);
+        return "redirect:configureSurvey?secretId=" + surveyBase.getSecret() + "&surveyId=" + id;
     }
 
     @RequestMapping(value = "/configureSurvey" , method = RequestMethod.GET)
-    public String getSurveyConfigurationPage(@RequestParam Long secretId, Model model) {
+    public String getSurveyConfigurationPage(@RequestParam String secretId, @RequestParam String surveyId, Model model) {
+        if (!configureSurveyService.isAccessAllowed(secretId, surveyId)) return "whoops";
         model.addAttribute("secretId", secretId);
+        model.addAttribute("surveyId", surveyId);
         return "configureSurvey";
     }
 
     @RequestMapping(value = "/endSurvey" , method = RequestMethod.POST)
-    public String endSurvey(@RequestParam Long secretId, Model model) {
-        model.addAttribute("secretId", secretId);
+    public String endSurvey(@RequestParam String surveyId, Model model) {
+        configureSurveyService.endSurvey(surveyId);
+        model.addAttribute("surveyId", surveyId);
         return "configureSurvey";
     }
 
@@ -70,7 +80,7 @@ public class ConfigureSurveyController {
             Map<String, Long> map = new HashMap<>();
             for(long i = 0; i < splittedValues.length; i++)
             {
-                map.put(splittedValues[(int)i], i);
+                map.put(splittedValues[(int)i], 0L);
             }
             radioOption.setRadioOptions(map);
             questions.add(radioOption);
@@ -82,7 +92,7 @@ public class ConfigureSurveyController {
             Map<String, Long> map = new HashMap<>();
             for(long i = 0; i < splittedValues.length; i++)
             {
-                map.put(splittedValues[(int)i], i);
+                map.put(splittedValues[(int)i], 0L);
             }
             checkBoxOption.setCheckBoxOptions(map);
             questions.add(checkBoxOption);

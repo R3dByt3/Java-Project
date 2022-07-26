@@ -9,12 +9,12 @@
     <label>Secret ID:</label>
     <label th:text="${secretId}"></label>
     <label>Umfragen URL:</label>
-    <label th:text="'localhost:54000/survey?surveyId='+${surveyId}"></label>
-    <form th:action="@{/endSurvey?secretId=3}"
+    <a th:href="'localhost:54000/survey?surveyId='+${surveyId}">Link zur Umfrage</a>
+    <form th:action="@{/endSurvey?surveyId=__${surveyId}__}"
           method="post">
     <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage beenden">
     </form>
-        <form th:action="@{/getStatistics(secretId=${secretId})}"
+        <form th:action="@{/getStatistics?surveyId=__${surveyId}__}"
               method="get">
     <input type="submit" class="btn btn-outline-primary btn-block" value="Statistik ansehen">
 </form>

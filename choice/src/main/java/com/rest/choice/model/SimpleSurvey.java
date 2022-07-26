@@ -13,4 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class SimpleSurvey extends SurveyBase {
     @DBRef(lazy = true)
     private OptionBase option;
+
+    public SimpleSurvey(String title, OptionBase optionBase) {
+        super(title);
+        this.option = optionBase;
+    }
 }

@@ -15,4 +15,9 @@ import java.util.ArrayList;
 public class ComplexSurvey extends SurveyBase {
     @DBRef(lazy = true)
     private ArrayList<OptionBase> options;
+
+    public ComplexSurvey(String title, ArrayList<OptionBase> options){
+        super(title);
+        this.options = options;
+    }
 }
