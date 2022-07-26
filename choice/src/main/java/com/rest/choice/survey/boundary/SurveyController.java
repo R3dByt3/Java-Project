@@ -24,6 +24,8 @@ public class SurveyController {
     @RequestMapping(value = "/survey" , method = RequestMethod.GET)
     public String getSurveyConfigurationPage(@RequestParam String surveyId, Model model) {
         SurveyBase survey = surveyService.getSurvey(surveyId);
+        if (survey.getCompleted())
+            return "whoops";
         SurveyResponse answers = new SurveyResponse();
         ArrayList<OptionBase> options = new ArrayList<>();
 
@@ -53,6 +55,8 @@ public class SurveyController {
     @RequestMapping(value = "/addSurveyAnswers" , method = RequestMethod.POST)
     public String addSurveyAnswers(@RequestParam String surveyId, @ModelAttribute(value = "answers") SurveyResponse answers, Model model) {
         SurveyBase survey = surveyService.getSurvey(surveyId);
+        if (survey.getCompleted())
+            return "whoops";
 
         if (survey instanceof SimpleSurvey) {
             SimpleSurvey simpleSurvey = (SimpleSurvey) survey;
