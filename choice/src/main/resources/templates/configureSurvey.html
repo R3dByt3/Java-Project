@@ -6,7 +6,10 @@
 
 <body>
     <h1>Umfrage konfigurieren</h1>
-    <p th:text="${secretId}"></p>
+    <label>Secret ID:</label>
+    <label th:text="${secretId}"></label>
+    <label>Umfragen URL:</label>
+    <label th:text="'localhost:54000/survey?surveyId='+${surveyId}"></label>
     <form th:action="@{/endSurvey?secretId=3}"
           method="post">
     <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage beenden">
