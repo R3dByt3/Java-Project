@@ -17,13 +17,13 @@ public abstract class SurveyBase {
     private String secret;
     private Boolean completed;
 
-    public SurveyBase(String title){
+    public SurveyBase(String title) {
         this.title = title;
         this.secret = java.util.UUID.randomUUID().toString();
         this.completed = false;
     }
 
-    public SurveyBase(){
+    public SurveyBase() {
         this.completed = false;
     }
 }

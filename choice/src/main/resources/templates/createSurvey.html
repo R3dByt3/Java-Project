@@ -3,91 +3,86 @@
 <head th:replace="fragments/header :: head">
     <meta charset="utf-8">
 </head>
-
 <body>
+<div class="container">
+    <br>
+    <header>
+        <h1 class="text-center">Umfrage konfigurieren</h1>
+    </header>
+</div>
+<br>
+<div class="container">
+    <form style="text-align: center;" th:action="@{/addSurvey}" method="post">
+        <table th:align="center">
+            <tr>
+                <td>Titel:</td>
+                <td><input class="form-control" type="text" name="title" minlength="1" maxlength="255"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <input type="submit" class="btn btn-outline-primary btn-sm" value="Umfrage erstellen">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<br>
+<div class="container" style="text-align: center">
+    <form th:action="@{/addQuestion}" method="post">
+        <p>
+            <label for="questionLabel">Frage:</label>
+            <input class="form-control" type="text" id="questionLabel" name="question">
+        </p>
 
-<h1>Umfrage konfigurieren</h1>
-<form th:action="@{/addSurvey}"
-      method="post">
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td><input class="form-control" type="text" name="name" minlength="1"
-                       maxlength="255"></td>
-        </tr>
-        <tr>
-            <td>Titel:</td>
-            <td><input class="form-control" type="text" name="title" minlength="1"
-                       maxlength="255"></td>
-        </tr>
-        <tr>
-            <td>Beschreibung:</td>
-            <td><input class="form-control" type="text" name="description" minlength="1"
-                       maxlength="255"></td>
-        </tr>
+        <p>
+            <label>Antworttyp:</label>
+            <input type="radio" th:value="TextOption" th:id="TextOption" th:name="option"/>
+            <label th:for="TextOption">Freitext</label>
+            <input type="radio" th:value="RadioOption" th:id="RadioOption" th:name="option"/>
+            <label th:for="RadioOption">Eine mögliche Antwort</label>
+            <input type="radio" th:value="CheckBoxOption" th:id="CheckBoxOption" th:name="option"/>
+            <label th:for="CheckBoxOption">Mehrere mögliche Antworten</label>
+        </p>
 
+        <p>
+            <label for="valuesLabel">Antwortmöglichkeiten (getrennt durch ';'):</label>
+            <input class="form-control" type="text" id="valuesLabel" name="values">
+        </p>
+
+        <input type="submit" class="btn btn-outline-primary btn-sm" value="Frage hinzufügen">
+    </form>
+</div>
+<br>
+<div class="container" style="text-align: center">
+    <table class="table table-hover table-bordered table-fixed">
+        <thead>
         <tr>
-            <input type="submit" class="btn btn-outline-primary btn-sm" value="Umfrage erstellen">
+            <th>Frage</th>
+            <th>Fragentyp</th>
+            <th>Antwortmöglichkeiten</th>
         </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question : ${questions}">
+            <td><span th:text="${question.question}"> Frage </span></td>
+            <td><span th:text="${typeHelper.GetTypeName(question)}"> Frage </span></td>
+            <td th:if="${typeHelper.GetTypeName(question).equals('TextOption')}">
+                <span> Freitext </span>
+            </td>
+            <td th:if="${typeHelper.GetTypeName(question).equals('RadioOption')}">
+                <ul th:each="option : ${typeHelper.AsRadioOption(question).getRadioOptions()}">
+                    <li th:text="${option}"></li>
+                </ul>
+            </td>
+            <td th:if="${typeHelper.GetTypeName(question).equals('CheckBoxOption')}">
+                <ul th:each="option : ${typeHelper.AsCheckBoxOption(question).getCheckBoxOptions()}">
+                    <li th:text="${option}"></li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
     </table>
-</form>
-
-<table class="table table-hover table-bordered table-fixed">
-    <thead>
-    <tr>
-        <th>Frage</th>
-        <th>Fragentyp</th>
-        <th>Antwortmöglichkeiten</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="question : ${questions}">
-        <td><span th:text="${question.question}"> Frage </span></td>
-        <td><span th:text="${typeHelper.GetTypeName(question)}"> Frage </span></td>
-        <td th:if="${typeHelper.GetTypeName(question).equals('TextOption')}">
-            <span> Freitext </span>
-        </td>
-        <td th:if="${typeHelper.GetTypeName(question).equals('RadioOption')}">
-            <ul th:each="option : ${typeHelper.AsRadioOption(question).getRadioOptions()}">
-                <li th:text="${option}"></li>
-            </ul>
-        </td>
-        <td th:if="${typeHelper.GetTypeName(question).equals('CheckBoxOption')}">
-            <ul th:each="option : ${typeHelper.AsCheckBoxOption(question).getCheckBoxOptions()}">
-                <li th:text="${option}"></li>
-            </ul>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-
-<form th:action="@{/addQuestion}"
-      method="post">
-    <p>
-        <label for="questionLabel">Frage:</label>
-        <input class="form-control" type="text" id="questionLabel" name="question">
-    </p>
-
-    <p>
-        <label>Antworttyp:</label>
-        <input type="radio" th:value="TextOption" th:id="TextOption"
-               th:name="options"/>
-        <label th:for="TextOption">Freitext</label>
-        <input type="radio" th:value="RadioOption" th:id="RadioOption"
-               th:name="options"/>
-        <label th:for="RadioOption">Eine mögliche Antwort</label>
-        <input type="radio" th:value="CheckBoxOption" th:id="CheckBoxOption"
-               th:name="options"/>
-        <label th:for="CheckBoxOption">Mehrere mögliche Antworten</label>
-    </p>
-
-    <p>
-        <label for="valuesLabel">Antwortmöglichkeiten:</label>
-        <input class="form-control" type="text" id="valuesLabel" name="values">
-    </p>
-
-    <input type="submit" class="btn btn-outline-primary btn-sm" value="Frage hinzufügen">
-</form>
+</div>
 </body>
 </html>

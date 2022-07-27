@@ -9,5 +9,6 @@ public interface SurveyService {
     public SurveyBase getSurvey(String surveyId);
 
     public void updateOption(OptionBase option);
+
     public void updateOptions(ArrayList<OptionBase> options);
 }

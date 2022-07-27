@@ -15,11 +15,11 @@ public class OptionDeserializer extends JsonDeserializer<OptionBase> {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = mapper.readTree(jp);
         Class<? extends OptionBase> instanceClass = null;
-        if(root.findValue("_class").asText().equals(TextOption.class.getSimpleName())) {
+        if (root.findValue("_class").asText().equals(TextOption.class.getSimpleName())) {
             instanceClass = TextOption.class;
-        } else if(root.findValue("_class").asText().equals(CheckBoxOption.class.getSimpleName())){
+        } else if (root.findValue("_class").asText().equals(CheckBoxOption.class.getSimpleName())) {
             instanceClass = CheckBoxOption.class;
-        } else if(root.findValue("_class").asText().equals(RadioOption.class.getSimpleName())){
+        } else if (root.findValue("_class").asText().equals(RadioOption.class.getSimpleName())) {
             instanceClass = RadioOption.class;
         }
 

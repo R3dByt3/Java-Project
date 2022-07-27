@@ -10,7 +10,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 @Service
-public class SurveyServiceImpl implements SurveyService{
+public class SurveyServiceImpl implements SurveyService {
 
     final SurveyRepository surveyRepository;
     final OptionRepository optionRepository;

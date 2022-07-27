@@ -17,9 +17,9 @@ public class SurveyDeserializer extends JsonDeserializer<SurveyBase> {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = mapper.readTree(jp);
         Class<? extends SurveyBase> instanceClass = null;
-        if(root.findValue("_class").asText().equals(SimpleSurvey.class.getSimpleName())) {
+        if (root.findValue("_class").asText().equals(SimpleSurvey.class.getSimpleName())) {
             instanceClass = SimpleSurvey.class;
-        } else if(root.findValue("_class").asText().equals(ComplexSurvey.class.getSimpleName())){
+        } else if (root.findValue("_class").asText().equals(ComplexSurvey.class.getSimpleName())) {
             instanceClass = ComplexSurvey.class;
         }
 

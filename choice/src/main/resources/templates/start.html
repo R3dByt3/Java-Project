@@ -3,7 +3,6 @@
 <head th:replace="fragments/header :: head">
     <meta charset="utf-8">
 </head>
-
 <body>
 <div class="container">
     <br>
@@ -13,10 +12,9 @@
 </div>
 <br>
 <div class="container" style="text-align: center">
-        <form class="text-center" th:action="@{/createSurvey}" method="get">
-                    <input type="submit" class="btn btn-outline-primary btn-block"
-                           th:value="Starten">
-        </form>
+    <form class="text-center" th:action="@{/createSurvey}" method="get">
+        <input type="submit" class="btn btn-outline-primary btn-block" th:value="Starten">
+    </form>
 </div>
 </body>
 </html>

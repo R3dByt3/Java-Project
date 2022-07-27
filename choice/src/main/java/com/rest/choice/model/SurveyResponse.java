@@ -7,7 +7,7 @@ import java.util.Map;
 public class SurveyResponse {
     private Map<String, ArrayList<String>> responses;
 
-    public SurveyResponse(){
+    public SurveyResponse() {
         responses = new HashMap<>();
     }
 

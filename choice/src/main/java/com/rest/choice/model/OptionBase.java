@@ -16,7 +16,7 @@ public abstract class OptionBase {
     private String _id;
     private String question;
 
-    public OptionBase(String question){
+    public OptionBase(String question) {
         this.question = question;
     }
 }

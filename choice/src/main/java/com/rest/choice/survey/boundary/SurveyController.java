@@ -21,7 +21,7 @@ public class SurveyController {
         this.surveyService = surveyService;
     }
 
-    @RequestMapping(value = "/survey" , method = RequestMethod.GET)
+    @RequestMapping(value = "/survey", method = RequestMethod.GET)
     public String getSurveyConfigurationPage(@RequestParam String surveyId, Model model) {
         SurveyBase survey = surveyService.getSurvey(surveyId);
         if (survey.getCompleted())
@@ -32,16 +32,14 @@ public class SurveyController {
         if (survey instanceof ComplexSurvey) {
             ComplexSurvey complexSurvey = (ComplexSurvey) survey;
             options.addAll(complexSurvey.getOptions());
-            for (OptionBase option: options) {
+            for (OptionBase option : options) {
                 answers.getResponses().put(option.get_id(), new ArrayList<>());
             }
-        }
-        else if (survey instanceof SimpleSurvey){
+        } else if (survey instanceof SimpleSurvey) {
             SimpleSurvey simpleSurvey = (SimpleSurvey) survey;
             options.add(simpleSurvey.getOption());
             answers.getResponses().put(simpleSurvey.getOption().get_id(), new ArrayList<>());
-        }
-        else
+        } else
             throw new IllegalStateException("Unknown type");
 
         model.addAttribute("answers", answers);
@@ -49,10 +47,11 @@ public class SurveyController {
         model.addAttribute("surveyId", survey.get_id());
         model.addAttribute("listSurveyQuestions", options);
         model.addAttribute("typeHelper", new TypeHelper());
+        model.addAttribute("title", survey.getTitle());
         return "survey";
     }
 
-    @RequestMapping(value = "/addSurveyAnswers" , method = RequestMethod.POST)
+    @RequestMapping(value = "/addSurveyAnswers", method = RequestMethod.POST)
     public String addSurveyAnswers(@RequestParam String surveyId, @ModelAttribute(value = "answers") SurveyResponse answers, Model model) {
         SurveyBase survey = surveyService.getSurvey(surveyId);
         if (survey.getCompleted())
@@ -64,12 +63,11 @@ public class SurveyController {
             surveyService.updateOption(simpleSurvey.getOption());
         } else if (survey instanceof ComplexSurvey) {
             ComplexSurvey complexSurvey = (ComplexSurvey) survey;
-            for (OptionBase option: complexSurvey.getOptions()) {
+            for (OptionBase option : complexSurvey.getOptions()) {
                 AddOptions(option, answers);
             }
             surveyService.updateOptions(complexSurvey.getOptions());
-        }
-        else
+        } else
             throw new IllegalStateException("Unknown type");
 
         return "surveySuccessfull";
@@ -79,22 +77,19 @@ public class SurveyController {
         if (option instanceof TextOption) {
             TextOption textOption = (TextOption) option;
             textOption.getAnswers().add(answers.getResponses().get(option.get_id()).get(0));
-        }
-        else if (option instanceof CheckBoxOption) {
+        } else if (option instanceof CheckBoxOption) {
             CheckBoxOption checkBoxOption = (CheckBoxOption) option;
             ArrayList<String> selectedAnswers = answers.getResponses().get(option.get_id());
-            for (String answer: selectedAnswers) {
+            for (String answer : selectedAnswers) {
                 checkBoxOption.getCheckBoxOptions().put(answer, checkBoxOption.getCheckBoxOptions().get(answer) + 1);
             }
-        }
-        else if (option instanceof RadioOption) {
+        } else if (option instanceof RadioOption) {
             RadioOption radioOption = (RadioOption) option;
             ArrayList<String> selectedAnswers = answers.getResponses().get(option.get_id());
-            for (String answer: selectedAnswers) {
+            for (String answer : selectedAnswers) {
                 radioOption.getRadioOptions().put(answer, radioOption.getRadioOptions().get(answer) + 1);
             }
-        }
-        else
+        } else
             throw new IllegalStateException("Unknown type");
     }
 }

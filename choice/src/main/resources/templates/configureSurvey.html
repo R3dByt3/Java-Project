@@ -5,18 +5,37 @@
 </head>
 
 <body>
-    <h1>Umfrage konfigurieren</h1>
+<div class="container">
+    <br>
+    <header>
+        <h1 class="text-center">Umfrage konfigurieren</h1>
+    </header>
+</div>
+<br>
+<div class="container" style="text-align: center">
+    <label>Titel:</label>
+    <label th:text="${title}"></label>
+    <br>
     <label>Secret ID:</label>
     <label th:text="${secretId}"></label>
+    <br>
     <label>Umfragen URL:</label>
     <a th:href="'localhost:54000/survey?surveyId='+${surveyId}">Link zur Umfrage</a>
+</div>
+<br>
+<div class="container" style="text-align: center">
     <form th:action="@{/endSurvey?surveyId=__${surveyId}__}"
           method="post">
-    <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage beenden">
+        <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage beenden"
+               th:disabled="${isCompleted}">
     </form>
-        <form th:action="@{/getStatistics?surveyId=__${surveyId}__}"
-              method="get">
-    <input type="submit" class="btn btn-outline-primary btn-block" value="Statistik ansehen">
-</form>
+    <br>
+    <form th:action="@{/getStatistics?surveyId=__${surveyId}__}"
+          method="post">
+        <input type="submit" class="btn btn-outline-primary btn-block" value="Statistik ansehen">
+    </form>
+</div>
+
 </body>
+
 </html>
