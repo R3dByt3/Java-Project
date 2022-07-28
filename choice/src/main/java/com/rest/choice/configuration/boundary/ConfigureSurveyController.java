@@ -55,6 +55,9 @@ public class ConfigureSurveyController {
     public String endSurvey(@RequestParam String surveyId, Model model) {
         configureSurveyService.endSurvey(surveyId);
         model.addAttribute("isCompleted", true);
+        model.addAttribute("surveyId", surveyId);
+        model.addAttribute("title", model.getAttribute("title"));
+        model.addAttribute("secretId", model.getAttribute("secretId"));
         return "configureSurvey";
     }
 
