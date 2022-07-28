@@ -27,20 +27,20 @@
                 <tbody>
                 <tr th:each="question : ${listSurveyQuestions}">
                     <td th:text="${question.getQuestion()}"></td>
-                    <td th:if="${typeHelper.GetTypeName(question).equals('TextOption')}">
+                    <td th:if="${typeHelper.getTypeName(question).equals('TextOption')}">
                         <input class="form-control" type="text" th:field="*{responses[__${question.get_id()}__]}"
                                minlength="1" maxlength="255"/>
                     </td>
 
-                    <td th:if="${typeHelper.GetTypeName(question).equals('RadioOption')}">
-                        <div th:each="option : ${typeHelper.AsRadioOption(question).getRadioOptions()}">
+                    <td th:if="${typeHelper.getTypeName(question).equals('RadioOption')}">
+                        <div th:each="option : ${typeHelper.asRadioOption(question).getRadioOptions()}">
                             <input type="radio" th:value="${option.key}" th:id="${option.key}"
                                    th:field="*{responses[__${question.get_id()}__]}"/>
                             <label th:for="${option.key}" th:text="${option.key}"></label>
                         </div>
                     </td>
-                    <td th:if="${typeHelper.GetTypeName(question).equals('CheckBoxOption')}">
-                        <div th:each="option : ${typeHelper.AsCheckBoxOption(question).getCheckBoxOptions()}">
+                    <td th:if="${typeHelper.getTypeName(question).equals('CheckBoxOption')}">
+                        <div th:each="option : ${typeHelper.asCheckBoxOption(question).getCheckBoxOptions()}">
                             <input type="checkbox" th:value="${option.key}" th:id="${option.key}"
                                    th:field="*{responses[__${question.get_id()}__]}"/>
                             <label th:for="${option.key}" th:text="${option.key}"></label>

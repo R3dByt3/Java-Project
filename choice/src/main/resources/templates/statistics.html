@@ -21,21 +21,21 @@
         </thead>
         <tbody>
         <tr th:each="option : ${options}">
-            <td th:text="${option.question}"></td>
-            <td th:if="${typeHelper.GetTypeName(option).equals('TextOption')}">
-                <ul th:each="answer : ${typeHelper.AsTextOption(option).getAnswers()}">
+            <td th:text="${option.getQuestion()}"></td>
+            <td th:if="${typeHelper.getTypeName(option).equals('TextOption')}">
+                <ul th:each="answer : ${typeHelper.asTextOption(option).getAnswers()}">
                     <li th:text="${answer}"></li>
                 </ul>
             </td>
 
-            <td th:if="${typeHelper.GetTypeName(option).equals('RadioOption')}">
-                <ul th:each="answer : ${typeHelper.AsRadioOption(option).getRadioOptions()}">
+            <td th:if="${typeHelper.getTypeName(option).equals('RadioOption')}">
+                <ul th:each="answer : ${typeHelper.asRadioOption(option).getRadioOptions()}">
                     <li th:text="${answer.value + ': ' + answer.key}"></li>
                 </ul>
             </td>
 
-            <td th:if="${typeHelper.GetTypeName(option).equals('CheckBoxOption')}">
-                <ul th:each="answer : ${typeHelper.AsCheckBoxOption(option).getCheckBoxOptions()}">
+            <td th:if="${typeHelper.getTypeName(option).equals('CheckBoxOption')}">
+                <ul th:each="answer : ${typeHelper.asCheckBoxOption(option).getCheckBoxOptions()}">
                     <li th:text="${answer.value + ': ' + answer.key}"></li>
                 </ul>
             </td>

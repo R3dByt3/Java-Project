@@ -24,7 +24,7 @@
 </div>
 <br>
 <div class="container" style="text-align: center">
-    <form th:action="@{/endSurvey?surveyId=__${surveyId}__}"
+    <form th:action="@{/endSurvey?surveyId=__${surveyId}__&secretId=__${secretId}__&title=__${title}__}"
           method="post">
         <input type="submit" class="btn btn-outline-primary btn-block" value="Umfrage beenden"
                th:disabled="${isCompleted}">

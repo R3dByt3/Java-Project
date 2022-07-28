@@ -17,6 +17,7 @@ import java.util.ArrayList;
 @Controller
 public class ConfigureSurveyController {
     ArrayList<OptionBase> questions = new ArrayList<>();
+    String title = "";
 
     private final ConfigureSurveyService configureSurveyService;
 
@@ -26,20 +27,22 @@ public class ConfigureSurveyController {
 
     @RequestMapping(value = "/createSurvey", method = RequestMethod.GET)
     public String getSurveyCreationPage() {
+        this.questions = new ArrayList<>();
+        title = "";
         return "createSurvey";
     }
 
     @RequestMapping(value = "/addSurvey", method = RequestMethod.POST)
-    public String createSurvey(@RequestParam String title) {
+    public String createSurvey() {
         SurveyBase surveyBase;
 
-        if (questions.stream().count() == 1)
-            surveyBase = new SimpleSurvey(title, questions.get(0));
+        if (this.questions.stream().count() == 1)
+            surveyBase = new SimpleSurvey(this.title, this.questions.get(0));
         else
-            surveyBase = new ComplexSurvey(title, questions);
+            surveyBase = new ComplexSurvey(this.title, this.questions);
 
         String id = configureSurveyService.createSurvey(surveyBase);
-        return "redirect:configureSurvey?secretId=" + surveyBase.getSecret() + "&surveyId=" + id + "&title=" + title;
+        return "redirect:configureSurvey?secretId=" + surveyBase.getSecret() + "&surveyId=" + id + "&title=" + this.title;
     }
 
     @RequestMapping(value = "/configureSurvey", method = RequestMethod.GET)
@@ -52,20 +55,30 @@ public class ConfigureSurveyController {
     }
 
     @RequestMapping(value = "/endSurvey", method = RequestMethod.POST)
-    public String endSurvey(@RequestParam String surveyId, Model model) {
+    public String endSurvey(@RequestParam String secretId, @RequestParam String surveyId, @RequestParam String title, Model model) {
         configureSurveyService.endSurvey(surveyId);
         model.addAttribute("isCompleted", true);
         model.addAttribute("surveyId", surveyId);
-        model.addAttribute("title", model.getAttribute("title"));
-        model.addAttribute("secretId", model.getAttribute("secretId"));
+        model.addAttribute("title", title);
+        model.addAttribute("secretId", secretId);
         return "configureSurvey";
     }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST)
     public String addQuestion(@RequestParam String question, @RequestParam String option, @RequestParam String values, Model model) {
-        questions = configureSurveyService.addQuestion(question, option, values, questions);
-        model.addAttribute("questions", questions);
+        this.questions = configureSurveyService.addQuestion(question, option, values, this.questions);
+        model.addAttribute("questions", this.questions);
         model.addAttribute("typeHelper", new TypeHelper());
+        model.addAttribute("title", this.title);
+        return "createSurvey";
+    }
+
+    @RequestMapping(value = "/setTitle", method = RequestMethod.POST)
+    public String addQuestion(@RequestParam String title, Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("typeHelper", new TypeHelper());
+        model.addAttribute("questions", this.questions);
+        this.title = title;
         return "createSurvey";
     }
 }

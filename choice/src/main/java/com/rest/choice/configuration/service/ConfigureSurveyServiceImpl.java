@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +63,8 @@ public class ConfigureSurveyServiceImpl implements ConfigureSurveyService {
                 RadioOption radioOption = new RadioOption();
                 radioOption.setQuestion(question);
                 String[] splittedValues = values.split(";");
+                if (Arrays.stream(splittedValues).filter(x -> !x.isBlank()).count() <= 1)
+                    return questions;
                 Map<String, Long> map = new HashMap<>();
                 for (long i = 0; i < splittedValues.length; i++) {
                     map.put(splittedValues[(int) i], 0L);
@@ -72,6 +75,8 @@ public class ConfigureSurveyServiceImpl implements ConfigureSurveyService {
                 CheckBoxOption checkBoxOption = new CheckBoxOption();
                 checkBoxOption.setQuestion(question);
                 String[] splittedValues = values.split(";");
+                if (Arrays.stream(splittedValues).filter(x -> !x.isBlank()).count() <= 1)
+                    return questions;
                 Map<String, Long> map = new HashMap<>();
                 for (long i = 0; i < splittedValues.length; i++) {
                     map.put(splittedValues[(int) i], 0L);

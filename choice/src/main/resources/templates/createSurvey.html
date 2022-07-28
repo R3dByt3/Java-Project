@@ -12,19 +12,11 @@
 </div>
 <br>
 <div class="container">
-    <form style="text-align: center;" th:action="@{/addSurvey}" method="post">
-        <table th:align="center">
-            <tr>
-                <td>Titel:</td>
-                <td><input class="form-control" type="text" name="title" minlength="1" maxlength="255"></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <br>
-                    <input type="submit" class="btn btn-outline-primary btn-sm" value="Umfrage erstellen">
-                </td>
-            </tr>
-        </table>
+    <form style="text-align: center;" th:action="@{/setTitle}" method="post">
+        <label>Titel:</label>
+        <input class="form-control" type="text" name="title" minlength="1" th:value="${title}" maxlength="255">
+        <br>
+        <input type="submit" class="btn btn-outline-primary btn-sm" value="Titel setzen">
     </form>
 </div>
 <br>
@@ -37,7 +29,7 @@
 
         <p>
             <label>Antworttyp:</label>
-            <input type="radio" th:value="TextOption" th:id="TextOption" th:name="option"/>
+            <input type="radio" th:value="TextOption" th:id="TextOption" th:name="option" checked/>
             <label th:for="TextOption">Freitext</label>
             <input type="radio" th:value="RadioOption" th:id="RadioOption" th:name="option"/>
             <label th:for="RadioOption">Eine mögliche Antwort</label>
@@ -66,23 +58,29 @@
         <tbody>
         <tr th:each="question : ${questions}">
             <td><span th:text="${question.question}"> Frage </span></td>
-            <td><span th:text="${typeHelper.GetTypeName(question)}"> Frage </span></td>
-            <td th:if="${typeHelper.GetTypeName(question).equals('TextOption')}">
+            <td><span th:text="${typeHelper.getTypeName(question)}"> Frage </span></td>
+            <td th:if="${typeHelper.getTypeName(question).equals('TextOption')}">
                 <span> Freitext </span>
             </td>
-            <td th:if="${typeHelper.GetTypeName(question).equals('RadioOption')}">
-                <ul th:each="option : ${typeHelper.AsRadioOption(question).getRadioOptions()}">
+            <td th:if="${typeHelper.getTypeName(question).equals('RadioOption')}">
+                <ul th:each="option : ${typeHelper.asRadioOption(question).getRadioOptions()}">
                     <li th:text="${option}"></li>
                 </ul>
             </td>
-            <td th:if="${typeHelper.GetTypeName(question).equals('CheckBoxOption')}">
-                <ul th:each="option : ${typeHelper.AsCheckBoxOption(question).getCheckBoxOptions()}">
+            <td th:if="${typeHelper.getTypeName(question).equals('CheckBoxOption')}">
+                <ul th:each="option : ${typeHelper.asCheckBoxOption(question).getCheckBoxOptions()}">
                     <li th:text="${option}"></li>
                 </ul>
             </td>
         </tr>
         </tbody>
     </table>
+</div>
+<br>
+<div class="container">
+    <form style="text-align: center;" th:action="@{/addSurvey}" method="post">
+        <input type="submit" class="btn btn-outline-primary btn-sm" value="Umfrage erstellen">
+    </form>
 </div>
 </body>
 </html>

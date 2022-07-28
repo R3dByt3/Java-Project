@@ -60,13 +60,11 @@ public class SurveyController {
         if (survey instanceof SimpleSurvey) {
             SimpleSurvey simpleSurvey = (SimpleSurvey) survey;
             AddOptions(simpleSurvey.getOption(), answers);
-            surveyService.updateOption(simpleSurvey.getOption());
         } else if (survey instanceof ComplexSurvey) {
             ComplexSurvey complexSurvey = (ComplexSurvey) survey;
             for (OptionBase option : complexSurvey.getOptions()) {
                 AddOptions(option, answers);
             }
-            surveyService.updateOptions(complexSurvey.getOptions());
         } else
             throw new IllegalStateException("Unknown type");
 
@@ -74,6 +72,7 @@ public class SurveyController {
     }
 
     private void AddOptions(OptionBase option, SurveyResponse answers) {
+        option = TypeHelper.unproxy(option);
         if (option instanceof TextOption) {
             TextOption textOption = (TextOption) option;
             textOption.getAnswers().add(answers.getResponses().get(option.get_id()).get(0));
@@ -91,5 +90,6 @@ public class SurveyController {
             }
         } else
             throw new IllegalStateException("Unknown type");
+        surveyService.updateOption(option);
     }
 }
